@@ -101,17 +101,19 @@ class MusicClassifier:
         """
         data is the output of last layer of model, ndarray
         """
-        softmax_o = self._model.predict(data)
-        print("softmax")
-        print(type(softmax_o))
-        print(softmax_o)
-        #ohk_out = np.where((softmax_o >= 0.5) & (0.99 > softmax_o) , 1, 0)
-        ohk_out = np.where(softmax_o >= 0.1 , 1, 0)
-        print(ohk_out)
-        result = self._dataset.one_hot_key_decode(ohk_out)
-        self._result = result
-        print("Huh, this file sounds like " + result)
-        return result
+        for datum in data:
+            softmax_o = self._model.predict(datum)
+            ohk_out = np.where(softmax_o >= 0.4 , 1, 0)
+            for ele in ohk_out[0]:
+                if ele == 1:
+                    print("Music contained")
+                    return True
+                else:
+                    continue
+        
+        return False
+                
+        
 
 
 

@@ -725,6 +725,11 @@ def calFeature(filename, win = 30):
     wav, f = load(filename, sr = None)
     print('Length of input signal is %d'% wav.shape[0])
     print('Sampling frequency is %d'% f)
+    
+    
+    features = []
+    
+    
     wav_len = wav.shape[0]
     totalSec = wav_len/f
     winSec = win # 2 min
@@ -732,5 +737,71 @@ def calFeature(filename, win = 30):
     endSec = startSec + winSec
     feature_v_raw, feature_name = stFeatureExtraction(wav[startSec*f:endSec*f], f, win = winSec*f, step = 1)
     
-    #return feature_v_raw.reshape(1,34), feature_name
-    return feature_v_raw, feature_name
+    return feature_v_raw.reshape(1,34), feature_name
+    #return feature_v_raw, feature_name
+    
+def calFeatures(filename, win = 30):
+    """
+    window_size is 120s by default
+    """
+    wav, f = load(filename, sr = None)
+    print('Length of input signal is %d'% wav.shape[0])
+    print('Sampling frequency is %d'% f)
+    
+    
+    features = []
+    
+    
+    wav_len = wav.shape[0]
+    totalSec = wav_len/f
+    winSec = win # 2 min
+    #startSec = random.randrange(0,math.ceil(totalSec - winSec))
+    startSec = 0
+    endSec = startSec + winSec
+    names = []
+    
+    while wav_len/f >= endSec:
+        #print(wav_len, startSec, endSec)
+        feature_v_raw, feature_name = stFeatureExtraction(wav[startSec*f:endSec*f], f, win = winSec*f, step = 1)
+        features.append(feature_v_raw.reshape(1,34))
+        names = feature_name
+        #print(wav_len, startSec, endSec)
+        startSec = endSec
+        endSec = startSec + winSec
+        #print(wav_len, startSec, endSec)
+    
+    return features, names
+    #return feature_v_raw, feature_name
+    
+def calFeaturesforsave(filename, win = 30):
+    """
+    window_size is 120s by default
+    """
+    wav, f = load(filename, sr = None)
+    print('Length of input signal is %d'% wav.shape[0])
+    print('Sampling frequency is %d'% f)
+    
+    
+    features = []
+    
+    
+    wav_len = wav.shape[0]
+    totalSec = wav_len/f
+    winSec = win # 2 min
+    #startSec = random.randrange(0,math.ceil(totalSec - winSec))
+    startSec = 0
+    endSec = startSec + winSec
+    names = []
+    
+    while wav_len/f >= endSec:
+        #print(wav_len, startSec, endSec)
+        feature_v_raw, feature_name = stFeatureExtraction(wav[startSec*f:endSec*f], f, win = winSec*f, step = 1)
+        features.append(feature_v_raw.reshape(34))
+        names = feature_name
+        #print(wav_len, startSec, endSec)
+        startSec = endSec
+        endSec = startSec + winSec
+        #print(wav_len, startSec, endSec)
+    
+    return features, names
+    #return feature_v_raw, feature_name

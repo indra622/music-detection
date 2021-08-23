@@ -1,17 +1,15 @@
 from keras.models import Sequential
 from keras.layers import Dense
-import pandas as pd
 from classifier.prepareData import Classifier_dataset
 
-# prepare the data and analysis the pca and lca
 
+csvPath = "data/data_set/beatsdataset.csv"
+DNNPath = "data/model/model.h5"
 dataColRanges = ('1-ZCRm', '34-ChromaDeviationm')
 labelCol = 'class'
-data_set = Classifier_dataset("../data/data_set/beatsdataset.csv")
+data_set = Classifier_dataset(csvPath)
 label, data = data_set.prepareData(dataColRanges, labelCol, True)
 
-fig1 = data_set.plotPCA()
-fig2 = data_set.plotLDA()
 
 # train a model here and save it in .h5 file
 print("Construct the model")
@@ -33,4 +31,4 @@ print("Start training")
 Dnn.fit(data, label, validation_split = 0.0, epochs = 100, batch_size=100, shuffle = True)
 
 # try training your own package!
-Dnn.save("../data/model/demo_exp.h5")
+Dnn.save(DNNPath)
