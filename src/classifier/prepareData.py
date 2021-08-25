@@ -50,7 +50,7 @@ class Classifier_dataset:
         self._f = f
         try:
 
-            self._frameData = pd.read_csv(f)
+            self._frameData = pd.read_csv(f, header=0)
         except:
             print("fail to open csv")
 
@@ -73,8 +73,8 @@ class Classifier_dataset:
 
         # Process data
         # for pandas version 0.24.2 use this line instead
-        # self._dataArray = self._data.to_numpy()
-        self._dataArray = self._data.get_values()
+        self._dataArray = self._data.to_numpy()
+        #self._dataArray = self._data.get_values()
 
 
         return self._labelArray, self._dataArray

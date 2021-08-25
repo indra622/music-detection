@@ -1,14 +1,16 @@
 from keras.models import Sequential
 from keras.layers import Dense
-from classifier.prepareData import Classifier_dataset
+from src.classifier.prepareData import Classifier_dataset
 
 
-csvPath = "data/data_set/beatsdataset.csv"
-DNNPath = "data/model/model.h5"
+csvPath = "train_dnn.csv"
+DNNPath = "data/model/youtube.h5"
 dataColRanges = ('1-ZCRm', '34-ChromaDeviationm')
 labelCol = 'class'
 data_set = Classifier_dataset(csvPath)
 label, data = data_set.prepareData(dataColRanges, labelCol, True)
+
+data = data.astype(float)
 
 
 # train a model here and save it in .h5 file

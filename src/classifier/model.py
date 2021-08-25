@@ -103,17 +103,56 @@ class MusicClassifier:
         """
         for datum in data:
             softmax_o = self._model.predict(datum)
-            ohk_out = np.where(softmax_o >= 0.4 , 1, 0)
-            for ele in ohk_out[0]:
-                if ele == 1:
-                    print("Music contained")
-                    return True
-                else:
-                    continue
+            max_ele = max(softmax_o)
+            ohk_out = np.where(softmax_o >=max_ele, 1, 0)
+            result = self._dataset.one_hot_key_decode(ohk_out)
+            print(result)
+            #print(ohk_out)
+            #print(ohk_out.shape)
+            
+            if result == 1:
+                print("Music contained")
+                return True
+            #ohk_out = np.where(softmax_o >= 0.4 , 1, 0)
+            #for ele in ohk_out[0]:
+            #    if ele == 1:
+            #        print("Music contained")
+            #        return True
+            #    else:
+            #        continue
         
         return False
                 
+    def predict_softmax(self, data):
+        """
+        data is the output of last layer of model, ndarray
+        """
         
+        results = []
+        for datum in data:
+            #print(type(np.array(datum)))
+            dd = np.array(datum).reshape(1,34)
+            softmax_o = self._model.predict(dd)
+            softmax_o = softmax_o[0]
+            max_ele = max(softmax_o)
+            #print(max_ele)
+            ohk_out = np.where(softmax_o >= max_ele, 1, 0)
+            #ohk_out = np.where(softmax_o >=0.8, 1, 0)
+            #print(ohk_out)
+            result = self._dataset.one_hot_key_decode(ohk_out)
+            print(result)
+            results.append(result)
+            #ohk_out.flatten()
+            #print(ohk_out)
+            #re
+            #print(ohk_out.shape)
+            
+            #if ohk_out[0][0] == 1:
+            #    print("Music contained")
+            #    return True
+            
+            
+        return results
 
 
 
